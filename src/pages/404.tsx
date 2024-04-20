@@ -2,9 +2,10 @@ import * as React from "react"
 import { HeadFC, navigate } from "gatsby"
 
 const NotFoundPage = () => {
-  return (
+  React.useEffect(() => {
     navigate('/controller')
-  )
+  })
+  return <>Not Found</>
 }
 
 export default NotFoundPage

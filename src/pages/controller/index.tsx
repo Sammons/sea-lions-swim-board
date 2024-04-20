@@ -58,7 +58,7 @@ const IndexPage: React.FC<PageProps> = () => {
         ControllerCounter.registerTap(LeftRightTap.Left)
       }
     })
-    window.addEventListener('keydown', keyListener);
+    addEventListener('keydown', keyListener);
     /* listening for updates to render */
     const counterListener = () => {
       setCounts(ControllerCounter.getAllCounts());
@@ -72,7 +72,7 @@ const IndexPage: React.FC<PageProps> = () => {
     // cleanup if the component dismounts
     return () => {
       ControllerCounter.removeListener(counterListener);
-      window.removeEventListener('keydown', keyListener);
+      removeEventListener('keydown', keyListener);
       clearInterval(interval);
     }
   });

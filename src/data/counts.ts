@@ -46,16 +46,19 @@ class Counter {
     this.monitoringFunctions.delete(fn);
   }
 
+  private get localStorage() {
+    return typeof window !== 'undefined' ? window.localStorage : null;
+  }
   /* basic get/set */
   private getCount(key: CounterKeys) {
-    const value = localStorage.getItem(key);
+    const value = this.localStorage?.getItem(key);
     if (!Number.isInteger(Number(value))) {
       return 0;
     }
     return Number(value)
   }
   private setCount(key: CounterKeys, value: number) {
-    localStorage.setItem(key, String(value))
+    this.localStorage?.setItem(key, String(value))
     this.checkAndExecuteMonitoringFunctions();
   }
 
