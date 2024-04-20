@@ -36,18 +36,22 @@ const IndexPage: React.FC<PageProps> = () => {
     raceNumber: 0
   })
   React.useEffect(() => {
-    const newControllerCounter = controllerCounter ?? new Counter();
-    setControllerCounter(newControllerCounter);
-    setCounts(newControllerCounter.getAllCounts());
-
-    /* listening for updates to render */
-    const counterListener = () => {
-      setCounts(newControllerCounter.getAllCounts());
-    }
-    newControllerCounter.listenForCountChanges(counterListener);
-    return () => {
-      newControllerCounter.removeListener(counterListener);
-      newControllerCounter.dispose();
+    if (controllerCounter) {
+      setCounts(controllerCounter.getAllCounts());
+      const counterListener = () => {
+        setCounts(controllerCounter.getAllCounts());
+      }
+      controllerCounter.listenForCountChanges(counterListener);
+      return () => {
+        controllerCounter.removeListener(counterListener);
+        controllerCounter.dispose();
+      }
+    } else {
+      const newControllerCounter = new Counter();
+      setControllerCounter(newControllerCounter);
+      return () => {
+        newControllerCounter.dispose();
+      }
     }
   }, [controllerCounter]);
   return (

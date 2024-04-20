@@ -121,6 +121,8 @@ export class Counter {
 
   public dispose() {
     if (this.monitoringInterval) {
+      this.taps = [];
+      this.monitoringFunctions = new Set();
       clearInterval(this.monitoringInterval);
     }
   }

@@ -53,39 +53,43 @@ const IndexPage: React.FC<PageProps> = () => {
     raceNumber: 0
   })
   React.useEffect(() => {
-    const newControllerCounter = controllerCounter ?? new Counter();
-    if (!controllerCounter) {
+    if (controllerCounter) {
+      setCounts(controllerCounter.getAllCounts());
+  
+      /* listening for updates to render */
+      const counterListener = () => {
+        setCounts(controllerCounter.getAllCounts());
+      }
+      controllerCounter.listenForCountChanges(counterListener);
+
+      /* listening for arrow keystrokes */
+      const keyListener = debounceBy10Ms((event: KeyboardEvent) => {
+        if (event.key === 'ArrowRight') {
+          controllerCounter.registerTap(LeftRightTap.Right)
+        }
+        if (event.key === 'ArrowLeft') {
+          controllerCounter.registerTap(LeftRightTap.Left)
+        }
+      })
+      addEventListener('keydown', keyListener);
+      /* watching count-down */
+      const interval = setInterval(() => {
+        setRemainingTime(controllerCounter.getTimeRemainingOnCounterMs());
+      }, 400);
+
+      return () => {
+        controllerCounter.removeListener(counterListener);
+        controllerCounter.dispose();
+        removeEventListener('keydown', keyListener);
+        clearInterval(interval);
+      }
+    } else {
+      const newControllerCounter = new Counter();
       setControllerCounter(newControllerCounter);
-      setCounts(newControllerCounter.getAllCounts())
-    }
-    /* listening for updates to render */
-    const counterListener = () => {
-      setCounts(newControllerCounter.getAllCounts());
-    }
-    newControllerCounter.listenForCountChanges(counterListener);
-
-    /* listening for arrow keystrokes */
-    const keyListener = debounceBy10Ms((event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') {
-        newControllerCounter.registerTap(LeftRightTap.Right)
-      }
-      if (event.key === 'ArrowLeft') {
-        newControllerCounter.registerTap(LeftRightTap.Left)
-      }
-    })
-    addEventListener('keydown', keyListener);
-
-
-    /* watching count-down */
-    const interval = setInterval(() => {
-      setRemainingTime(newControllerCounter.getTimeRemainingOnCounterMs());
-    }, 400);
-    // cleanup if the component dismounts
-    return () => {
-      newControllerCounter.removeListener(counterListener);
-      newControllerCounter.dispose();
-      removeEventListener('keydown', keyListener);
-      clearInterval(interval);
+      // cleanup if the component dismounts
+      return () => {
+        newControllerCounter.dispose();
+      };
     }
   }, [controllerCounter]);
   return (
@@ -107,35 +111,35 @@ const IndexPage: React.FC<PageProps> = () => {
         <div>
           This page acts as a controller for <Link to='../counter' >the swim meet board</Link> which has a bullpen and race number counter. That page is designed to scale to large and varying screen sizes.
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'left'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left' }}>
           <h2>Here are the current counters</h2>
-          <div style={{maxWidth: '150px'}}>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+          <div style={{ maxWidth: '150px' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               <div><b>Bullpen</b></div> <div>{FormatCount(counts.bullpen)}</div>
             </div>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               <div><b>Race Number</b></div> <div>{FormatCount(counts.raceNumber)}</div>
             </div>
           </div>
           <h2>Update the counters</h2>
           <div>
             Use the buttons below to update the counts. You can also use the left and right arrow keys.
-            <br/>
+            <br />
             There are short cuts for double and triple tapping within a <b>3 second</b> window.
             {/* little count down indicator */}
-            {' '}{remainingTime != null && remainingTime > 0 ? `${Math.floor(remainingTime/1000)}.${String(remainingTime/1000 - Math.floor(remainingTime/1000)).split('.').pop()?.substring(0, 2)}` : ''}
-            <br/>This is meant to work with a power point clicker:
-            <br/>
-            <br/>
-            <b>Left</b> - subtracts from bullpen <br/>
-            <b>Right</b> - adds to the bullpen <br/>
-            <b>Left Left</b> subtracts from race number <br/>
-            <b>Right Right</b> - adds to race number <br/>
-            <b>Left Left Left</b> - subtracts from both <br/>
-            <b>Right Right Right</b> - adds to both <br/>
+            {' '}{remainingTime != null && remainingTime > 0 ? `${Math.floor(remainingTime / 1000)}.${String(remainingTime / 1000 - Math.floor(remainingTime / 1000)).split('.').pop()?.substring(0, 2)}` : ''}
+            <br />This is meant to work with a power point clicker:
+            <br />
+            <br />
+            <b>Left</b> - subtracts from bullpen <br />
+            <b>Right</b> - adds to the bullpen <br />
+            <b>Left Left</b> subtracts from race number <br />
+            <b>Right Right</b> - adds to race number <br />
+            <b>Left Left Left</b> - subtracts from both <br />
+            <b>Right Right Right</b> - adds to both <br />
           </div>
           <div>
-            <br/>
+            <br />
             OR use these buttons
             <div>
               <table width={"100%"}>
