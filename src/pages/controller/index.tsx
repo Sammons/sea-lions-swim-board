@@ -87,7 +87,7 @@ const IndexPage: React.FC<PageProps> = () => {
       removeEventListener('keydown', keyListener);
       clearInterval(interval);
     }
-  });
+  }, [controllerCounter]);
   return (
     <>
       <div id="controller" style={{

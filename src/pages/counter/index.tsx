@@ -48,13 +48,13 @@ const IndexPage: React.FC<PageProps> = () => {
       newControllerCounter.removeListener(counterListener);
       newControllerCounter.dispose();
     }
-  });
+  }, [controllerCounter]);
   return (
     <>
       <div style={{
         width: '100%',
         height: '100vh',
-        backgroundImage: `url('/static/sealionlogo.png')`,
+        backgroundImage: `url('/sea-lions-swim-board/static/sealionlogo.png')`,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
