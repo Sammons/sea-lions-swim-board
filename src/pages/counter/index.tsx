@@ -3,6 +3,7 @@ import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import styled from 'styled-components'
 import { Counter, FormatCount } from '../../data/counts'
+import background from '../../images/sealionlogo.png';
 
 const CounterDiv = styled('div')`
   height: 35vh;
@@ -54,7 +55,7 @@ const IndexPage: React.FC<PageProps> = () => {
       <div style={{
         width: '100%',
         height: '100vh',
-        backgroundImage: `url('/sea-lions-swim-board/static/sealionlogo.png')`,
+        backgroundImage: `url(${background})`,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
