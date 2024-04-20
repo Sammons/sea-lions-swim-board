@@ -1,6 +1,6 @@
 import './controller.css'
 import * as React from "react"
-import type { HeadFC, PageProps } from "gatsby"
+import { Link, type HeadFC, type PageProps } from "gatsby"
 import styled from 'styled-components'
 import { Counter, CounterKeys, FormatCount, LeftRightTap } from '../../data/counts'
 
@@ -105,7 +105,7 @@ const IndexPage: React.FC<PageProps> = () => {
           Welcome
         </h1>
         <div>
-          This page acts as a controller for <a href='/counter'>the swim meet board</a> which has a bullpen and race number counter. That page is designed to scale to large and varying screen sizes.
+          This page acts as a controller for <Link to='../counter' >the swim meet board</Link> which has a bullpen and race number counter. That page is designed to scale to large and varying screen sizes.
         </div>
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'left'}}>
           <h2>Here are the current counters</h2>
