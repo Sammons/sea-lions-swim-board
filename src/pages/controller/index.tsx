@@ -2,7 +2,7 @@ import './controller.css'
 import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import styled from 'styled-components'
-import { ControllerCounter, CounterKeys, FormatCount, LeftRightTap } from '../../data/counts'
+import { Counter, CounterKeys, FormatCount, LeftRightTap } from '../../data/counts'
 
 const CounterDiv = styled('div')`
   height: 35vh;
@@ -46,32 +46,44 @@ const debounceBy10Ms = <T extends Function>(fn: T) => (...args: any[]) => {
 }
 
 const IndexPage: React.FC<PageProps> = () => {
+  const [controllerCounter, setControllerCounter] = React.useState<Counter | null>(null);
   const [remainingTime, setRemainingTime] = React.useState<number | null>(null);
-  const [counts, setCounts] = React.useState<ReturnType<typeof ControllerCounter['getAllCounts']>>(ControllerCounter.getAllCounts())
+  const [counts, setCounts] = React.useState({
+    bullpen: 0,
+    raceNumber: 0
+  })
   React.useEffect(() => {
+    const newControllerCounter = controllerCounter ?? new Counter();
+    if (!controllerCounter) {
+      setControllerCounter(newControllerCounter);
+      setCounts(newControllerCounter.getAllCounts())
+    }
+    /* listening for updates to render */
+    const counterListener = () => {
+      setCounts(newControllerCounter.getAllCounts());
+    }
+    newControllerCounter.listenForCountChanges(counterListener);
+
     /* listening for arrow keystrokes */
     const keyListener = debounceBy10Ms((event: KeyboardEvent) => {
       if (event.key === 'ArrowRight') {
-        ControllerCounter.registerTap(LeftRightTap.Right)
+        newControllerCounter.registerTap(LeftRightTap.Right)
       }
       if (event.key === 'ArrowLeft') {
-        ControllerCounter.registerTap(LeftRightTap.Left)
+        newControllerCounter.registerTap(LeftRightTap.Left)
       }
     })
     addEventListener('keydown', keyListener);
-    /* listening for updates to render */
-    const counterListener = () => {
-      setCounts(ControllerCounter.getAllCounts());
-    }
-    ControllerCounter.listenForCountChanges(counterListener);
+
 
     /* watching count-down */
     const interval = setInterval(() => {
-      setRemainingTime(ControllerCounter.getTimeRemainingOnCounterMs());
+      setRemainingTime(newControllerCounter.getTimeRemainingOnCounterMs());
     }, 400);
     // cleanup if the component dismounts
     return () => {
-      ControllerCounter.removeListener(counterListener);
+      newControllerCounter.removeListener(counterListener);
+      newControllerCounter.dispose();
       removeEventListener('keydown', keyListener);
       clearInterval(interval);
     }
@@ -136,23 +148,23 @@ const IndexPage: React.FC<PageProps> = () => {
                 <tbody>
                   <tr>
                     <td>
-                      <ControllerButton onClick={() => ControllerCounter.decrementCount(CounterKeys.Bullpen)}>Subtract</ControllerButton>
-                      <ControllerButton onClick={() => ControllerCounter.incrementCount(CounterKeys.Bullpen)}>Add</ControllerButton>
+                      <ControllerButton onClick={() => controllerCounter?.decrementCount(CounterKeys.Bullpen)}>Subtract</ControllerButton>
+                      <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.Bullpen)}>Add</ControllerButton>
                     </td>
                     <td>
-                      <ControllerButton onClick={() => ControllerCounter.decrementCount(CounterKeys.RaceNumber)}>Subtract</ControllerButton>
-                      <ControllerButton onClick={() => ControllerCounter.incrementCount(CounterKeys.RaceNumber)}>Add</ControllerButton>
+                      <ControllerButton onClick={() => controllerCounter?.decrementCount(CounterKeys.RaceNumber)}>Subtract</ControllerButton>
+                      <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.RaceNumber)}>Add</ControllerButton>
                     </td>
                   </tr>
                   <tr>
                     <td colSpan={2}>
                       <ControllerButton onClick={() => {
-                        ControllerCounter.decrementCount(CounterKeys.Bullpen);
-                        ControllerCounter.decrementCount(CounterKeys.RaceNumber);
+                        controllerCounter?.decrementCount(CounterKeys.Bullpen);
+                        controllerCounter?.decrementCount(CounterKeys.RaceNumber);
                       }}>Subtract both</ControllerButton>
                       <ControllerButton onClick={() => {
-                        ControllerCounter.incrementCount(CounterKeys.Bullpen);
-                        ControllerCounter.incrementCount(CounterKeys.RaceNumber);
+                        controllerCounter?.incrementCount(CounterKeys.Bullpen);
+                        controllerCounter?.incrementCount(CounterKeys.RaceNumber);
                       }}>Add both</ControllerButton>
                     </td>
                   </tr>

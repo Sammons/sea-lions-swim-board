@@ -2,7 +2,7 @@ import './counter.css'
 import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import styled from 'styled-components'
-import { ControllerCounter, FormatCount } from '../../data/counts'
+import { Counter, FormatCount } from '../../data/counts'
 
 const CounterDiv = styled('div')`
   height: 35vh;
@@ -29,15 +29,24 @@ const CounterLabel = styled('div')`
 `
 
 const IndexPage: React.FC<PageProps> = () => {
-  const [counts, setCounts] = React.useState<ReturnType<typeof ControllerCounter['getAllCounts']>>(ControllerCounter.getAllCounts())
+  const [controllerCounter, setControllerCounter] = React.useState<Counter | null>(null);
+  const [counts, setCounts] = React.useState({
+    bullpen: 0,
+    raceNumber: 0
+  })
   React.useEffect(() => {
+    const newControllerCounter = controllerCounter ?? new Counter();
+    setControllerCounter(newControllerCounter);
+    setCounts(newControllerCounter.getAllCounts());
+
     /* listening for updates to render */
     const counterListener = () => {
-      setCounts(ControllerCounter.getAllCounts());
+      setCounts(newControllerCounter.getAllCounts());
     }
-    ControllerCounter.listenForCountChanges(counterListener);
+    newControllerCounter.listenForCountChanges(counterListener);
     return () => {
-      ControllerCounter.removeListener(counterListener);
+      newControllerCounter.removeListener(counterListener);
+      newControllerCounter.dispose();
     }
   });
   return (

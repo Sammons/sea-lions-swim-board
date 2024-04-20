@@ -6,11 +6,11 @@ export enum CounterKeys {
 }
 
 export enum LeftRightTap {
-  Left,
-  Right
+  Left = 'Left',
+  Right = 'Right'
 }
 
-class Counter {
+export class Counter {
 
   private monitoringFunctions = new Set<Function>();
   private monitoringInterval: null | ReturnType<typeof setInterval> = null;
@@ -20,12 +20,14 @@ class Counter {
       bullpen: this.getCount(CounterKeys.Bullpen)
     }
   }
-  private lastCounts: ReturnType<Counter['getAllCounts']> | null = null;
+  private lastCounts: ReturnType<Counter['getAllCounts']>  = {
+    bullpen: 0,
+    raceNumber: 0
+  }
   public checkAndExecuteMonitoringFunctions() {
     const currentCounts = this.getAllCounts();
-    const lastCounts = this.lastCounts;
     const countKeys = Object.keys(currentCounts) as (keyof typeof currentCounts)[];
-    const somethingChanged = lastCounts != null && countKeys.some(key => currentCounts[key] !== lastCounts[key]);
+    const somethingChanged = this.lastCounts != null && countKeys.some(key => currentCounts[key] !== this.lastCounts[key]);
     this.lastCounts = currentCounts;
     if (!somethingChanged) {
       return;
@@ -46,19 +48,17 @@ class Counter {
     this.monitoringFunctions.delete(fn);
   }
 
-  private get localStorage() {
-    return typeof window !== 'undefined' ? window.localStorage : null;
-  }
   /* basic get/set */
   private getCount(key: CounterKeys) {
-    const value = this.localStorage?.getItem(key);
+    const value = localStorage.getItem(key);
     if (!Number.isInteger(Number(value))) {
       return 0;
     }
     return Number(value)
   }
   private setCount(key: CounterKeys, value: number) {
-    this.localStorage?.setItem(key, String(value))
+    console.log('setting value', key, value)
+    localStorage.setItem(key, String(value))
     this.checkAndExecuteMonitoringFunctions();
   }
 
@@ -87,8 +87,9 @@ class Counter {
       this.decrementCount(CounterKeys.Bullpen)
     } else if (this.taps.length == 1 && this.taps.every(t => t === LeftRightTap.Right)) {
       this.incrementCount(CounterKeys.Bullpen)
+    } else {
+      console.log('doing nothing, tap sequence made no sense', this.taps);
     }
-    console.log('doing nothing, tap sequence made no sense');
     this.taps = [];
   }
 
@@ -114,12 +115,16 @@ class Counter {
   }
 
   public registerTap(tap: LeftRightTap) {
-    this.startTimer();
     this.taps.push(tap)
+    this.startTimer();
+  }
+
+  public dispose() {
+    if (this.monitoringInterval) {
+      clearInterval(this.monitoringInterval);
+    }
   }
 }
-
-export const ControllerCounter = new Counter();
 
 export const FormatCount = (count: number) => {
   const s = String(count);
