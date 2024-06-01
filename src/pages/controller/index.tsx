@@ -1,4 +1,4 @@
-import './controller.css'
+entimport './controller.css'
 import * as React from "react"
 import { Link, type HeadFC, type PageProps } from "gatsby"
 import styled from 'styled-components'
@@ -50,7 +50,7 @@ const IndexPage: React.FC<PageProps> = () => {
   const [remainingTime, setRemainingTime] = React.useState<number | null>(null);
   const [counts, setCounts] = React.useState({
     bullpen: 0,
-    raceNumber: 0
+    Event: 0
   })
   React.useEffect(() => {
     if (controllerCounter) {
@@ -109,7 +109,7 @@ const IndexPage: React.FC<PageProps> = () => {
           Welcome
         </h1>
         <div>
-          This page acts as a controller for <Link to='../counter' >the swim meet board</Link> which has a bullpen and race number counter. That page is designed to scale to large and varying screen sizes.
+          This page acts as a controller for <Link to='../counter' >the swim meet board</Link> which has a bullpen and Event counter. That page is designed to scale to large and varying screen sizes.
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left' }}>
           <h2>Here are the current counters</h2>
@@ -118,7 +118,7 @@ const IndexPage: React.FC<PageProps> = () => {
               <div><b>Bullpen</b></div> <div>{FormatCount(counts.bullpen)}</div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <div><b>Race Number</b></div> <div>{FormatCount(counts.raceNumber)}</div>
+              <div><b>Event</b></div> <div>{FormatCount(counts.raceNumber)}</div>
             </div>
           </div>
           <h2>Update the counters</h2>
@@ -133,8 +133,8 @@ const IndexPage: React.FC<PageProps> = () => {
             <br />
             <b>Left</b> - subtracts from bullpen <br />
             <b>Right</b> - adds to the bullpen <br />
-            <b>Left Left</b> subtracts from race number <br />
-            <b>Right Right</b> - adds to race number <br />
+            <b>Left Left</b> subtracts from event <br />
+            <b>Right Right</b> - adds to event <br />
             <b>Left Left Left</b> - subtracts from both <br />
             <b>Right Right Right</b> - adds to both <br />
           </div>
@@ -146,7 +146,7 @@ const IndexPage: React.FC<PageProps> = () => {
                 <thead>
                   <tr>
                     <th>Bullpen</th>
-                    <th>Race Number</th>
+                    <th>Event</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -156,19 +156,19 @@ const IndexPage: React.FC<PageProps> = () => {
                       <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.Bullpen)}>Add</ControllerButton>
                     </td>
                     <td>
-                      <ControllerButton onClick={() => controllerCounter?.decrementCount(CounterKeys.RaceNumber)}>Subtract</ControllerButton>
-                      <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.RaceNumber)}>Add</ControllerButton>
+                      <ControllerButton onClick={() => controllerCounter?.decrementCount(CounterKeys.Event)}>Subtract</ControllerButton>
+                      <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.Event)}>Add</ControllerButton>
                     </td>
                   </tr>
                   <tr>
                     <td colSpan={2}>
                       <ControllerButton onClick={() => {
                         controllerCounter?.decrementCount(CounterKeys.Bullpen);
-                        controllerCounter?.decrementCount(CounterKeys.RaceNumber);
+                        controllerCounter?.decrementCount(CounterKeys.Event);
                       }}>Subtract both</ControllerButton>
                       <ControllerButton onClick={() => {
                         controllerCounter?.incrementCount(CounterKeys.Bullpen);
-                        controllerCounter?.incrementCount(CounterKeys.RaceNumber);
+                        controllerCounter?.incrementCount(CounterKeys.Event);
                       }}>Add both</ControllerButton>
                     </td>
                   </tr>
