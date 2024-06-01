@@ -1,4 +1,4 @@
-import './counter.css'
+ventimport './counter.css'
 import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
 import styled from 'styled-components'
@@ -70,13 +70,13 @@ const IndexPage: React.FC<PageProps> = () => {
           backgroundColor: 'var(--counter-one)'
         }}>
           <CounterNumber>{FormatCount(counts.bullpen)}</CounterNumber>
-          <CounterLabel><b>Bullpen</b></CounterLabel>
+          <CounterLabel><b>Bullpen up to</b></CounterLabel>
         </CounterDiv>
         <CounterDiv id="left-counter" className='counter' style={{
           backgroundColor: 'var(--counter-two)'
         }}>
           <CounterNumber>{FormatCount(counts.raceNumber)}</CounterNumber>
-          <CounterLabel><b>Race Number</b></CounterLabel>
+          <CounterLabel><b>Event</b></CounterLabel>
         </CounterDiv>
 
       </div>
