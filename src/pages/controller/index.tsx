@@ -133,8 +133,8 @@ const IndexPage: React.FC<PageProps> = () => {
             <br />
             <b>Left</b> - subtracts from bullpen <br />
             <b>Right</b> - adds to the bullpen <br />
-            <b>Left Left</b> subtracts from event <br />
-            <b>Right Right</b> - adds to event <br />
+            <b>Left Left</b> subtracts from race number <br />
+            <b>Right Right</b> - adds to race number <br />
             <b>Left Left Left</b> - subtracts from both <br />
             <b>Right Right Right</b> - adds to both <br />
           </div>
@@ -146,7 +146,7 @@ const IndexPage: React.FC<PageProps> = () => {
                 <thead>
                   <tr>
                     <th>Bullpen</th>
-                    <th>Event</th>
+                    <th>Race Number</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -156,19 +156,19 @@ const IndexPage: React.FC<PageProps> = () => {
                       <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.Bullpen)}>Add</ControllerButton>
                     </td>
                     <td>
-                      <ControllerButton onClick={() => controllerCounter?.decrementCount(CounterKeys.Event)}>Subtract</ControllerButton>
-                      <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.Event)}>Add</ControllerButton>
+                      <ControllerButton onClick={() => controllerCounter?.decrementCount(CounterKeys.Race Number)}>Subtract</ControllerButton>
+                      <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.Race Number)}>Add</ControllerButton>
                     </td>
                   </tr>
                   <tr>
                     <td colSpan={2}>
                       <ControllerButton onClick={() => {
                         controllerCounter?.decrementCount(CounterKeys.Bullpen);
-                        controllerCounter?.decrementCount(CounterKeys.Event);
+                        controllerCounter?.decrementCount(CounterKeys.Race Number);
                       }}>Subtract both</ControllerButton>
                       <ControllerButton onClick={() => {
                         controllerCounter?.incrementCount(CounterKeys.Bullpen);
-                        controllerCounter?.incrementCount(CounterKeys.Event);
+                        controllerCounter?.incrementCount(CounterKeys.Race Number);
                       }}>Add both</ControllerButton>
                     </td>
                   </tr>
