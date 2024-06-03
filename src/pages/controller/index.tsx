@@ -156,19 +156,19 @@ const IndexPage: React.FC<PageProps> = () => {
                       <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.Bullpen)}>Add</ControllerButton>
                     </td>
                     <td>
-                      <ControllerButton onClick={() => controllerCounter?.decrementCount(CounterKeys.Racenumber)}>Subtract</ControllerButton>
-                      <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.Racenumber)}>Add</ControllerButton>
+                      <ControllerButton onClick={() => controllerCounter?.decrementCount(CounterKeys.RaceNumber)}>Subtract</ControllerButton>
+                      <ControllerButton onClick={() => controllerCounter?.incrementCount(CounterKeys.RaceNumber)}>Add</ControllerButton>
                     </td>
                   </tr>
                   <tr>
                     <td colSpan={2}>
                       <ControllerButton onClick={() => {
                         controllerCounter?.decrementCount(CounterKeys.Bullpen);
-                        controllerCounter?.decrementCount(CounterKeys.Racenumber);
+                        controllerCounter?.decrementCount(CounterKeys.RaceNumber);
                       }}>Subtract both</ControllerButton>
                       <ControllerButton onClick={() => {
                         controllerCounter?.incrementCount(CounterKeys.Bullpen);
-                        controllerCounter?.incrementCount(CounterKeys.Racenumber);
+                        controllerCounter?.incrementCount(CounterKeys.RaceNumber);
                       }}>Add both</ControllerButton>
                     </td>
                   </tr>
