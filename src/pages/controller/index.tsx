@@ -1,4 +1,4 @@
-entimport './controller.css'
+import './controller.css'
 import * as React from "react"
 import { Link, type HeadFC, type PageProps } from "gatsby"
 import styled from 'styled-components'
