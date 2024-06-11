@@ -17,14 +17,14 @@ const CounterDiv = styled('div')`
 
 const CounterNumber = styled('div')`
   color: white;
-  font-size: 28vh;
+  font-size: 25vh;
   width: 100%;
   text-align: center;
 `
 
 const CounterLabel = styled('div')`
   color: white;
-  font-size: 12.5vw;
+  font-size: 9.5vw;
   width: 100%;
   text-align: center;
 `
