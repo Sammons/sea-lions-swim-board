@@ -6,8 +6,8 @@ import { Counter, FormatCount } from '../../data/counts'
 import background from '../../images/sealionlogo.png';
 
 const CounterDiv = styled('div')`
-  height: 35vh;
-  width: 30vw;
+  height: 45vh;
+  width: 40vw;
   border-radius: 17vh;
   display: flex;
   align-items: center;
