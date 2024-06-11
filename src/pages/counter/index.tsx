@@ -17,7 +17,7 @@ const CounterDiv = styled('div')`
 
 const CounterNumber = styled('div')`
   color: white;
-  font-size: 28vh;
+  font-size: 40vh;
   width: 100%;
   text-align: center;
 `
