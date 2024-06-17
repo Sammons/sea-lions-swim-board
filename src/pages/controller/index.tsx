@@ -64,10 +64,10 @@ const IndexPage: React.FC<PageProps> = () => {
 
       /* listening for arrow keystrokes */
       const keyListener = debounceBy10Ms((event: KeyboardEvent) => {
-        if (event.key === 'ArrowRight') {
+        if (event.key === 'PageUp' || event.key === 'ArrowRight') {
           controllerCounter.registerTap(LeftRightTap.Right)
         }
-        if (event.key === 'ArrowLeft') {
+        if (event.key === 'PageDown' || event.key === 'ArrowLeft') {
           controllerCounter.registerTap(LeftRightTap.Left)
         }
       })
